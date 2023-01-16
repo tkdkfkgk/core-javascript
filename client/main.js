@@ -1,5 +1,7 @@
 import { 
   diceAnimation, 
+  disableElement, 
+  enableElement, 
   getNode, 
   getNodes } from "./lib/index.js";
 
@@ -31,19 +33,23 @@ const [rollingDiceButton,recordButton,resetButton] = getNodes('.buttonGroup > bu
 
 // 2. setInterval함수를 사용해 주사위 계속 굴러가게,시간마다
 const handlerRollingDice = (() => {
-
+ 
   let isRolling = false;
-  let stopAnimation;
+  let stopAnimation;  
 
   return () => {
     if(!isRolling){
-      console.log(1);
-      stopAnimation = setInterval(diceAnimation,1000)
-      recordButton.disabled = true;
+      console.log('첫번째 클릭');
+      stopAnimation = setInterval(diceAnimation,100)
+      // recordButton.disabled = true;
+      disableElement(recordButton)
+      disableElement(resetButton)
     }else{
-      console.log(2);
+      console.log('두번째 클릭');
       clearInterval(stopAnimation);
-      recordButton.disabled = false;
+      // recordButton.disabled = false;
+      enableElement(recordButton)
+      enableElement(resetButton)
     }
   
     isRolling = !isRolling; // 2번 클릭시마다 t/f 값을 바꿔줘서 if의 구문을 토글기능처럼 사용
