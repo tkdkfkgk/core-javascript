@@ -5,7 +5,11 @@ import {
   getNode, 
   getNodes, 
   visibleElement,
-  invisibleElement} from "./lib/index.js";
+  invisibleElement,
+  insertLast,
+  attr,
+  clearContents,
+  memo} from "./lib/index.js";
 
 // [ 주사위 굴리기 ]
 // 1. dice 애니메이션 불러오기
@@ -20,19 +24,57 @@ import {
 // 4. visible 활성 유틸 함수 만들기
 // 5. toggleState 유틸 함수 만들기
 
+// [ 레코드 템플릿 뿌리기 ]
+// 1. renderRecordListItem 함수 만들기
+// 2. HTML 템플릿 만들기
+// 3. 템플릿 뿌리기 
+
+// [ 초기화 시키기 ]
+// 1. clearContent 로 정보 지우기
+// 2. total, count 초기화 
+// 3. 스크롤 밑으로 보내기 
+// 4. 메모이제이션 패턴 
+
 // diceAnimation()
 
 // 1. 주사위굴리기 버튼 접근 > 배열의 구조 분해 할당
 const [rollingDiceButton,recordButton,resetButton] = getNodes('.buttonGroup > button');
 const recordListWrapper = getNode('.recordListWrapper');
 
+memo('@tbody',()=>getNode('.recordListWrapper tbody'));
+
 // console.log(button);
 // const rollingDiceButton = getNode('.buttonGroup > button:nth-child(1)');
 // const recordButton = getNode('.buttonGroup > button:nth-child(2)');
 // const resetButton = getNode('.buttonGroup > button:nth-child(3)');
 
+/* -------------------------------------------------------------------------- */
+/*                                   render                                   */
+/* -------------------------------------------------------------------------- */
+let count = 0;
+let total = 0;
+// redux
+// mobx
 
-// IIFE
+function renderRecordListItem(){
+  // let diceContainer = getNode('#diceContainer > #cube > .front data-dice');
+  // let diceValue = +attr('#cube','data-dice');
+  let diceValue = Number(attr(memo('cube'),'data-dice'));
+
+  let template = /* html */`
+  <tr>
+    <td>${++count}</td>
+    <td>${diceValue}</td>
+    <td>${total += diceValue}</td>
+  </tr>`
+
+  insertLast(memo('@tbody'),template)
+  recordListWrapper.scrollTop = recordListWrapper.scrollHeight
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                event handler                               */
+/* -------------------------------------------------------------------------- */
 
 // 2. setInterval함수를 사용해 주사위 계속 굴러가게,시간마다
 const handleRollingDice = (() => {
@@ -63,11 +105,17 @@ const handleRollingDice = (() => {
 const handleRecord =()=>{
   console.log(1);
   visibleElement(recordListWrapper);
+
+  renderRecordListItem()
 }
 
 const handleReset =()=>{
   console.log(2);
+  count = 0;
+  total = 0;
+
   invisibleElement(recordListWrapper);
+  clearContents(memo('@tbody'))
 }
 
 // 3. 주사위굴리기 버튼 클릭시 handleRollingDice 함수 실행
