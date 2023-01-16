@@ -3,7 +3,9 @@ import {
   disableElement, 
   enableElement, 
   getNode, 
-  getNodes } from "./lib/index.js";
+  getNodes, 
+  visibleElement,
+  invisibleElement} from "./lib/index.js";
 
 // [ 주사위 굴리기 ]
 // 1. dice 애니메이션 불러오기
@@ -22,6 +24,7 @@ import {
 
 // 1. 주사위굴리기 버튼 접근 > 배열의 구조 분해 할당
 const [rollingDiceButton,recordButton,resetButton] = getNodes('.buttonGroup > button');
+const recordListWrapper = getNode('.recordListWrapper');
 
 // console.log(button);
 // const rollingDiceButton = getNode('.buttonGroup > button:nth-child(1)');
@@ -32,7 +35,7 @@ const [rollingDiceButton,recordButton,resetButton] = getNodes('.buttonGroup > bu
 // IIFE
 
 // 2. setInterval함수를 사용해 주사위 계속 굴러가게,시간마다
-const handlerRollingDice = (() => {
+const handleRollingDice = (() => {
  
   let isRolling = false;
   let stopAnimation;  
@@ -56,11 +59,21 @@ const handlerRollingDice = (() => {
   }
 })() // 클로저로 까대기를 바로 사용할 때는 즉시실행함수로 IIFE패턴을 사용
 
+// 5
+const handleRecord =()=>{
+  console.log(1);
+  visibleElement(recordListWrapper);
+}
 
+const handleReset =()=>{
+  console.log(2);
+  invisibleElement(recordListWrapper);
+}
 
-// 3. 주사위굴리기 버튼 클릭시 handlerRollingDice 함수 실행
-rollingDiceButton.addEventListener('click',handlerRollingDice) // 클릭이벤트시 한번은 실행해주지만 ()붙여서 한번더실행 해서 값 반환
+// 3. 주사위굴리기 버튼 클릭시 handleRollingDice 함수 실행
+rollingDiceButton.addEventListener('click',handleRollingDice) // 클릭이벤트시 한번은 실행해주지만 ()붙여서 한번더실행 해서 값 반환
+recordButton.addEventListener('click',handleRecord) // 4
+resetButton.addEventListener('click',handleReset)
 
-// let eventOff = bindEvent(rollingDiceButton,'click',handlerRollingDice);
-
+// let eventOff = bindEvent(rollingDiceButton,'click',handleRollingDice);
 
