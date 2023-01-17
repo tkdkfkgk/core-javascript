@@ -4,10 +4,19 @@ h1 {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  text-align: center;
 }
 
 body {
   /* height: 100vh;
   display: flex;
   align-items: center; */
+}
+
+.first{
+  display: inline-block;
+  position: relative;
+  left: 0;
+  top: 0;
+  transition: all 1s;
 }
