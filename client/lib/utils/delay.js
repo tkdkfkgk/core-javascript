@@ -61,18 +61,20 @@ export function delayP(options = {}){
   // defaultOptions
 
   let config = {...defaultOptions}
-     
+  console.log(1,config);
+  console.log(2,options);
   
   if(isNumber(options)){
+    console.log(3,options);
     config.timeout = options;
   }
 
   // 객체 합성  mixin
   if(isObject(options)){
+    console.log(4,options);
+    console.log(5,config);
     config = {...config,...options};
   }
-  
-  
   
   const {shouldReject,data,errorMessage,timeout} = config;
   
