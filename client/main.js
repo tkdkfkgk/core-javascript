@@ -6,11 +6,12 @@ import {
   // xhrPromise,
   tiger,
   delayP,
-  $ as $,
+  getNode as $,
   renderUserCard,
   changeColor,
   renderSpinner,
-  renderEmptyCard
+  renderEmptyCard,
+  attr
 } from "./lib/index.js";
 
 // rendingUserList 함수 만들기 
@@ -31,11 +32,11 @@ async function rendingUserList(){
   renderSpinner(userCardContainer)
 
   try{
-    await delayP(1000);
+    // await delayP(100);
 
     $('.loadingSpinner').remove();
 
-    let response = await tiger.get('https://jsonplaceholder.typicode.com/users');
+    let response = await tiger.get('http://localhost:3000/users');
     
     let userData = response.data;
   
@@ -69,6 +70,29 @@ async function rendingUserList(){
 }
 
 rendingUserList();
+
+// 삭제 버튼을 클릭하면 콘솔창에 '삭제' 글자가 출력이 될 수 있도록 만들어 주세요.
+
+function handler(e){
+  let deleteButton = e.target.closest('button');
+  let article = e.target.closest('article');
+
+  if(!deleteButton || !article) return;
+
+  let id = attr(article,'data-index').slice(5);
+
+  tiger.delete(`http://localhost:3000/users/${id}`).then(()=>{
+    userCardContainer.innerHTML = '';
+    rendingUserList();
+  })
+
+
+  console.log(id);
+  console.log(2,deleteButton);
+  console.log(3,article);
+}
+
+userCardContainer.addEventListener('click',handler)
 
 // xhrPromise
 // .get('https://jsonplaceholder.typicode.com/users/1')

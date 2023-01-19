@@ -128,10 +128,6 @@ const createEmptyCard = (size = 200, errorMessage = '표시할 데이터가 존�
   `
 }
 
-function deleteUserList(){
-  
-}
-
 // renderSpinner
 export const renderUserCard = (target,data) => {
   insertLast(target, createUserCard(data));
